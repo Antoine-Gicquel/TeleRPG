@@ -3,7 +3,7 @@ import random
 from pygame.locals import *
 import os
 import math
-os.chdir("D:\\Informatique\\prog python\\jeux\\moi\\Telegame")
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 exec(open('lib/Perso.py').read())
 exec(open('lib/DoorConnector.py').read())
 exec(open('lib/Map.py').read())
@@ -54,13 +54,13 @@ while continuer == 1:
                 if map.canWalk(perso.getPosition()[0], perso.getPosition()[1] + 1):
                     perso.move(0, 1)
 
-    # Gestion des collisions                
+    # Gestion des collisions
     for ent in entities:
         if perso.getHitbox().colliderect(ent.getHitbox()):
             # on gère la collision
             pass
-    
-    # Gestion des evenements de map                
+
+    # Gestion des evenements de map
     if map.checkAction(perso.getPosition()):
         action, param = map.getAction(perso.getPosition())
         action(param)
