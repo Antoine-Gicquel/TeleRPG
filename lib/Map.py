@@ -1,8 +1,3 @@
-def gotoMap(connector):
-    map.initFromFile("./res/maps/map_"+connector.mapToGo)
-    perso.position = [connector.posInNewMap[0], connector.posInNewMap[1]]
-
-
 class Map(object):
     def __init__(self, fenetre):
         self.fenetre = fenetre
@@ -12,7 +7,8 @@ class Map(object):
             self.addTile(tileName)
 
         self.tiles = []
-        self.tilesdata = []
+        self.tilesEvents = []
+        self.entities = []
 
     def addTile(self, tileName):
         self.tilesDict[tileName] = pygame.image.load("./res/tiles/"+tileName+".jpg").convert()
@@ -20,22 +16,32 @@ class Map(object):
     def initFromFile(self, filename):
         f = open(filename, "r")
         self.tiles = [] # tiles[y][x]
-        self.tilesdata = []
+        self.tilesEvents = []
+        self.entities = []
         lines = f.readlines()
         for l in lines:
             if len(l)>2:
                 self.tiles.append([])
-                self.tilesdata.append([])
+                self.tilesEvents.append([])
+                self.entities.append([])
                 l = l.split(" ")
                 for c in l:
                     if '\n' in c:
                         c = c.split('\n')[0]
+                    if '+' in c: # tile+entity
+                        ent = c.split('+')[1]
+                        # on stocke l'entité
+                        self.entities[-1].append(Entity.createEntity(ent))
+                        c = c.split('+')[0]
+                    else:
+                        self.entities[-1].append(None)
                     c = c.split(",")
                     self.tiles[-1].append(c[0])
                     if len(c) == 1:
-                        self.tilesdata[-1].append(None)
+                        self.tilesEvents[-1].append(None)
                     elif len(c) > 1:
-                        self.tilesdata[-1].append(DoorConnector(c[1], (int(c[2]), int(c[3]))))
+                        if c[1] == 'event_porte':
+                            self.tilesEvents[-1].append(DoorConnector(c[2], (int(c[3]), int(c[4])))) # mapToGo, xToGoInMap, yToGoInMap
 
     def refresh(self, posPerso, windowDim):
         surf = pygame.display.get_surface()
@@ -51,20 +57,29 @@ class Map(object):
             for i in range(yDebut, yFin):
                 if (i>=0 and j>=0 and i<len(self.tiles) and j<len(self.tiles[0])):
                     self.fenetre.blit(self.tilesDict[self.tiles[i][j]], ((j-xDebut)*40, (i-yDebut)*40))
+                    if self.entities[i][j] != None:
+                        self.fenetre.blit(self.entities[i][j].getImage(), ((j-xDebut)*40, (i-yDebut)*40))
                 else:
                     self.fenetre.blit(self.tilesDict["void"], ((j-xDebut)*40, (i-yDebut)*40))
 
     def canWalk(self, x, y):
+        global entityToInteract
         if (x < 0 or y < 0 or x>= len(self.tiles[0]) or y >= len(self.tiles)):
             return False
-        if self.tiles[y][x] not in ["beton", "orange"]:
-            return True
-        return False
+        if self.tiles[y][x] in ["beton", "orange", "void"] or self.checkEntity((x,y)):
+            return False
+        return True
 
-    def checkAction(self, playerPos):
-        if self.tilesdata[playerPos[1]][playerPos[0]] != None:
-            return True
+    def checkEvent(self, playerPos):
+        return self.tilesEvents[playerPos[1]][playerPos[0]] != None
 
-    def getAction(self, playerPos):
-        c = self.tilesdata[playerPos[1]][playerPos[0]]
-        return gotoMap, c
+    def getEvent(self, playerPos):
+        c = self.tilesEvents[playerPos[1]][playerPos[0]]
+        return c
+    
+    def checkEntity(self, playerPos):
+        return self.entities[playerPos[1]][playerPos[0]] != None
+
+    def getEntity(self, playerPos):
+        c = self.entities[playerPos[1]][playerPos[0]]
+        return c

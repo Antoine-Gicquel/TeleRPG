@@ -18,3 +18,4 @@ def saveToFile(filename, mapConfig):
             f.write(" ")
         f.write("\n")
     f.close()
+
