@@ -8,7 +8,7 @@ class Dialogue(object):
         margin = 10
         scaleFactor = 4
         font = pygame.font.Font("./res/fonts/verdana.ttf", 30)
-        text_height = blit_text(fenetre, self.text, (2*margin, 0), window_dimensions[0] - 2*margin, font, False)
+        _, text_height = blit_text(fenetre, self.text, (2*margin, 0), window_dimensions[0] - 2*margin, font, False)
         yTop = window_dimensions[1] - margin - text_height
         pygame.draw.rect(fenetre, (100,0,100) , (margin, yTop, window_dimensions[0] - 2*margin, window_dimensions[1] - yTop - margin)) # on met le background du dialogue
         

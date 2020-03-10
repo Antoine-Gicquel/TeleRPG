@@ -10,6 +10,7 @@ exec(open('lib/Perso.py').read())
 exec(open('lib/Event.py').read())
 exec(open('lib/Map.py').read())
 exec(open('lib/Dialogue.py').read())
+exec(open('lib/Menu.py').read())
 
 
 window_dimensions = [800, 600]
@@ -25,13 +26,9 @@ perso.afficher(window_dimensions)
 pygame.display.flip()
 pygame.key.set_repeat(400, 60)
 
-# son = pygame.mixer.Sound("poEmme.wav")
+# son = pygame.mixer.Sound("pomme.wav")
 # mort = pygame.mixer.Sound("game-over.wav")
-# font = pygame.font.Font("verdana.ttf", 30)
-# a_score = font.render(str(score), 1, (255, 255, 255))
-# fenetre.blit(a_score, (6,32))
 # pygame.time.delay(3720)
-# BOUCLE INFINIE
 
 
 continuer = 1
@@ -82,6 +79,7 @@ while continuer == 1:
         continue
     else :
         if needRefresh:
-            map.refresh(perso.getPosition(), window_dimensions)
-            perso.afficher(window_dimensions)
-            pygame.display.flip()
+            visual_refresh()
+
+pygame.display.quit()
+pygame.quit()

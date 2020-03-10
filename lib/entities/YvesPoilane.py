@@ -8,5 +8,7 @@ class YvesPoilane(Entity):
         return self.tile
     
     def runScenario(self):
-        dia = Dialogue("Coucou je suis Yves Poilane et je mange des frites avec de la pizza, et le coronavirus", self.tile)
-        dia.show()
+        # dia = Dialogue("Coucou je suis Yves Poilane et je mange des frites avec de la pizza, et le coronavirus", self.tile)
+        # dia.show()
+        menu = Menu("Tu veux quoi ?", ["D'la weed", "Des credits stage", "Des credits FH"])
+        menu.show()
