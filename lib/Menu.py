@@ -66,3 +66,4 @@ class Menu(object):
                         finalChoice = -1
         
         visual_refresh()
+        return finalChoice

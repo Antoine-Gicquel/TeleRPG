@@ -5,7 +5,7 @@ def blit_text(screen, text, pos, max_width, font, affichage = True, color=pygame
     text_width = 0
     for line in words:
         for word in line:
-            word_surface = font.render(word, 0, color)
+            word_surface = font.render(word, True, color)
             word_width, word_height = word_surface.get_size()
             if x + word_width >= max_width:
                 x = pos[0]  # Reset the x.
