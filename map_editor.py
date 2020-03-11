@@ -83,7 +83,10 @@ class Map(object):
         self.tiles[y][x] = tilesNames[tileNb]
     
     def saveToFile(self, filename):
-        # TODO
+        f = open(filename, "w")
+        for ligne in self.tiles:
+            f.write(" ".join(ligne) + "\n")
+        f.close()
         pass
 
 
@@ -137,7 +140,7 @@ map.initFromFile("res/maps/"+map_name)
 cursor = Cursor()
 map.refresh(cursor.getPosition(), window_dimensions)
 cursor.afficher(window_dimensions)
-Dialogue("Echap : menu des tiles  -  CTRL + arrow : ne peint pas", pygame.image.load("./res/entities/yves_poilane.png").convert_alpha()).show()
+Dialogue("Echap : menu des tiles  -  CTRL + arrow : ne peint pas  -  S : save", pygame.image.load("./res/entities/yves_poilane.png").convert_alpha()).show()
 pygame.display.flip()
 pygame.key.set_repeat(400, 60)
 
