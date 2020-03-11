@@ -2,7 +2,6 @@ class Map(object):
     def __init__(self, fenetre):
         self.fenetre = fenetre
         self.tilesDict = dict()
-        print(os.listdir('res/tiles'))
         tilesNames = [x.split('.')[0] for x in os.listdir('res/tiles') if '.jpg' in x]
         for tileName in tilesNames:
             self.addTile(tileName)

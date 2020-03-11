@@ -20,6 +20,7 @@ pygame.display.set_caption("Telegame")
 perso = Perso(fenetre)
 map = Map(fenetre)
 map.initFromFile("./res/maps/map_outside")
+perso.position = [80, 46]
 entities = []
 map.refresh(perso.getPosition(), window_dimensions)
 perso.afficher(window_dimensions)

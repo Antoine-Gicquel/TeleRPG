@@ -43,7 +43,6 @@ class Map(object):
                     if '+' in c: # tile+entity
                         ent = c.split('+')[1]
                         # on stocke l'entité
-                        self.entities[-1].append(Entity.createEntity(ent))
                         c = c.split('+')[0]
                     else:
                         self.entities[-1].append(None)
@@ -54,6 +53,7 @@ class Map(object):
                     elif len(c) > 1:
                         if c[1] == 'event_porte':
                             self.tilesEvents[-1].append(DoorConnector(c[2], (int(c[3]), int(c[4])))) # mapToGo, xToGoInMap, yToGoInMap
+
 
     def refresh(self, posPerso, windowDim):
         global fenetre
