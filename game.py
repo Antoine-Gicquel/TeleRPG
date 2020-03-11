@@ -1,8 +1,9 @@
 import pygame
-import random
+import math
 from pygame.locals import *
 import os
-import math
+
+
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 exec(open('lib/pygame_functions.py').read())
 exec(open('lib/Entity.py').read())

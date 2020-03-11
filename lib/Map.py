@@ -66,7 +66,7 @@ class Map(object):
         global entityToInteract
         if (x < 0 or y < 0 or x>= len(self.tiles[0]) or y >= len(self.tiles)):
             return False
-        if self.tiles[y][x] in ["beton", "orange", "void"] or self.checkEntity((x,y)):
+        if self.tiles[y][x] in ["orange", "void"] or self.checkEntity((x,y)):
             return False
         return True
 
