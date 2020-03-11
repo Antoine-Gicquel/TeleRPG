@@ -43,6 +43,7 @@ class Map(object):
                     if '+' in c: # tile+entity
                         ent = c.split('+')[1]
                         # on stocke l'entité
+                        self.entities[-1].append(ent)
                         c = c.split('+')[0]
                     else:
                         self.entities[-1].append(None)
@@ -51,8 +52,7 @@ class Map(object):
                     if len(c) == 1:
                         self.tilesEvents[-1].append(None)
                     elif len(c) > 1:
-                        if c[1] == 'event_porte':
-                            self.tilesEvents[-1].append(DoorConnector(c[2], (int(c[3]), int(c[4])))) # mapToGo, xToGoInMap, yToGoInMap
+                        self.tilesEvents[-1].append(",".join(c[1:]))
 
 
     def refresh(self, posPerso, windowDim):
@@ -70,8 +70,6 @@ class Map(object):
             for i in range(yDebut, yFin):
                 if (i>=0 and j>=0 and i<len(self.tiles) and j<len(self.tiles[0])):
                     fenetre.blit(self.tilesDict[self.tiles[i][j]], ((j-xDebut)*40, (i-yDebut)*40))
-                    if self.entities[i][j] != None:
-                        fenetre.blit(self.entities[i][j].getImage(), ((j-xDebut)*40, (i-yDebut)*40))
                 else:
                     fenetre.blit(self.tilesDict["void"], ((j-xDebut)*40, (i-yDebut)*40))
     
@@ -84,8 +82,14 @@ class Map(object):
     
     def saveToFile(self, filename):
         f = open(filename, "w")
-        for ligne in self.tiles:
-            f.write(" ".join(ligne) + "\n")
+        for i in range(len(self.tiles)):
+            l = self.tiles[i][:]
+            for j in range(len(l)):
+                if self.tilesEvents[i][j] != None:
+                    l[j] = l[j] + "," + self.tilesEvents[i][j]
+                if self.entities[i][j] != None:
+                    l[j] = l[j] + "+" + self.entities[i][j]
+            f.write(" ".join(l) + "\n")
         f.close()
         pass
 
