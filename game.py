@@ -34,38 +34,39 @@ pygame.key.set_repeat(400, 60)
 continuer = 1
 while continuer == 1:
     needRefresh = False
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            continuer = 0
-            needRefresh = True
-        if event.type == VIDEORESIZE:
-            window_dimensions = [event.w, event.h]
-            fenetre = pygame.display.set_mode((event.w, event.h),
-                                              pygame.RESIZABLE)
-            needRefresh = True
-            
-        if event.type == KEYDOWN:
-            if event.key == K_RIGHT:
-                if map.canWalk(perso.getPosition()[0] + 1, perso.getPosition()[1]):
-                    perso.move(1, 0)
-                    needRefresh = True
-            if event.key == K_LEFT:
-                if map.canWalk(perso.getPosition()[0] - 1, perso.getPosition()[1]):
-                    perso.move(-1, 0)
-                    needRefresh = True
-            if event.key == K_UP:
-                if map.canWalk(perso.getPosition()[0], perso.getPosition()[1] - 1):
-                    perso.move(0, -1)
-                    needRefresh = True
-            if event.key == K_DOWN:
-                if map.canWalk(perso.getPosition()[0], perso.getPosition()[1] + 1):
-                    perso.move(0, 1)
-                    needRefresh = True
-            if event.key == K_e:
-                for dx, dy in [(1, 0), (0, 1), (-1, 0), (0, -1)]:
-                    if map.checkEntity((perso.getPosition()[0] + dx, perso.getPosition()[1] + dy)):
-                        map.getEntity((perso.getPosition()[0] + dx, perso.getPosition()[1] + dy)).runScenario()
-                        break
+    # pygame.event.wait()
+    event = pygame.event.wait()
+    if event.type == QUIT:
+        continuer = 0
+        needRefresh = True
+    if event.type == VIDEORESIZE:
+        window_dimensions = [event.w, event.h]
+        fenetre = pygame.display.set_mode((event.w, event.h),
+                                            pygame.RESIZABLE)
+        needRefresh = True
+        
+    if event.type == KEYDOWN:
+        if event.key == K_RIGHT:
+            if map.canWalk(perso.getPosition()[0] + 1, perso.getPosition()[1]):
+                perso.move(1, 0)
+                needRefresh = True
+        if event.key == K_LEFT:
+            if map.canWalk(perso.getPosition()[0] - 1, perso.getPosition()[1]):
+                perso.move(-1, 0)
+                needRefresh = True
+        if event.key == K_UP:
+            if map.canWalk(perso.getPosition()[0], perso.getPosition()[1] - 1):
+                perso.move(0, -1)
+                needRefresh = True
+        if event.key == K_DOWN:
+            if map.canWalk(perso.getPosition()[0], perso.getPosition()[1] + 1):
+                perso.move(0, 1)
+                needRefresh = True
+        if event.key == K_e:
+            for dx, dy in [(1, 0), (0, 1), (-1, 0), (0, -1)]:
+                if map.checkEntity((perso.getPosition()[0] + dx, perso.getPosition()[1] + dy)):
+                    map.getEntity((perso.getPosition()[0] + dx, perso.getPosition()[1] + dy)).runScenario()
+                    break
 
 
     # Gestion des evenements de map
@@ -74,12 +75,10 @@ while continuer == 1:
         ev.act()
         needRefresh = True
 
-    # On recommence
-    if continuer == 2:
-        continue
-    else :
-        if needRefresh:
-            visual_refresh()
+
+    
+    if needRefresh:
+        visual_refresh()
 
 pygame.display.quit()
 pygame.quit()

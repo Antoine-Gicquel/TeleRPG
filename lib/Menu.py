@@ -5,11 +5,14 @@ class Menu(object):
             self.choices[i] = "    "+self.choices[i] # on ajoute une tabulation a chaque choix
         self.text = text
     
-    def show(self):
+    def show(self, map_edition=False):
         """ Retourne l'indice du choix """
         global fenetre, window_dimensions
         margin = 10
-        font = pygame.font.Font("./res/fonts/verdana.ttf", 30)
+        font_size = 30
+        if map_edition:
+            font_size = 20
+        font = pygame.font.Font("./res/fonts/verdana.ttf", font_size)
         menu_height = 0
         menu_width = 0
         
@@ -53,7 +56,7 @@ class Menu(object):
                     window_dimensions = [event.w, event.h]
                     fenetre = pygame.display.set_mode((event.w, event.h),
                                                     pygame.RESIZABLE)
-                    needRefresh = True
+                    visual_refresh()
                     
                 if event.type == KEYDOWN:
                     if event.key == K_UP:
@@ -65,5 +68,10 @@ class Menu(object):
                     if event.key == K_ESCAPE:
                         finalChoice = -1
         
-        visual_refresh()
+        if not map_edition:
+            visual_refresh()
+        else:
+            map.refresh(cursor.getPosition(), window_dimensions)
+            cursor.afficher(window_dimensions)
+            pygame.display.flip()
         return finalChoice
